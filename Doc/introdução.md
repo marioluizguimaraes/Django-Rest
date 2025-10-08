@@ -46,8 +46,9 @@ Antes de criar a aplicação em Django Rest, é necessário instalar o Django e 
 ```
 python3 -m venv env
 
-source /env/bin/activate
-WINDOWS: env\Scripts\activate
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+.\env\Scripts\activate
 
 pip install django
 
