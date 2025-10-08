@@ -369,39 +369,178 @@ Para acessar a interface gráfica do ReDoc, basta acessar a URL `http://localhos
 
 
 
-# Trabalho Prático 2 - Modelagem em Django Rest
 
-## Descrição do Trabalho
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/cVxn4hMj)
+[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=20967354)
 
-O trabalho prático consiste em evoluir o TP 1, onde foi modelago um sistema de gerenciamento de laboratórios. O sistema deve permitir que os professores reservem horários para utilizar os laboratórios disponíveis, além de permitir a reserva de laboratórios para atividades extras, como reuniões, cursos, palestras, etc.
+# TP2 - 2025.2 Sistema Bancário
 
-**Link assignment Github Classroom**: https://classroom.github.com/a/2UIF0oTU
+Link Assignment: https://classroom.github.com/a/cVxn4hMj
 
-Imagine que a Direção da DIATINF solicitou para que você resolvesse um problema crônico de gestão de laboratórios da nossa Diretoria. O problema é que os laboratórios não têm um controle adequado de agendamento e uso, o que leva a conflitos de horários e falta de recursos disponíveis para os alunos.
+## Descrição do Problema
 
-A Direção da DIATINF decidiu criar um sistema de agendamento de laboratórios, onde os professores poderão reservar horários para utilizar os laboratórios disponíveis. Os laboratórios também podem ser reservados para atividades extras, como reuniões, cursos, palestras, etc.
+Imagine que um banco nacional solicitou para que você desenvolvesse um sistema de gerenciamento bancário para modernizar suas operações. O problema é que o banco não possui um sistema que permita o controle adequado de agências, contas, clientes e transações financeiras, o que leva a inconsistências nos dados e dificuldades no atendimento aos clientes.
 
-Cada laboratório tem um nome, uma descrição, uma capacidade máxima de alunos e um status (disponível ou indisponível em um determinado horário). Os professores podem reservar laboratórios para aulas, e cada reserva deve incluir o nome do professor, a data e hora de início e fim da reserva, o laboratório reservado e o número de alunos.
+A diretoria do banco decidiu criar um sistema de gestão bancária, onde será possível cadastrar agências, abrir contas para clientes, registrar depósitos, saques e transferências entre contas. O sistema deve garantir a rastreabilidade de todas as operações financeiras realizadas.
 
-Nos casos dos laboratórios já estares alocados para as aulas, o professor deverá registrar a retirada e a entrega da chave do laboratório, com a data e hora de retirada e entrega. O sistema deve permitir que os professores visualizem as reservas feitas para cada laboratório, bem como o histórico de reservas e retiradas de chaves.
+## Contexto do Sistema
 
-Percebam que a gerência dos laboratórios seguem 2 fluxos distintos:
-1. O fluxo principal é de horarios de aulas definidos para os professores e suas respectivas disciplinas e cursos;
-2. A reserva de laboratórios nos horários disponíveis para atividades extras, como reuniões, cursos, palestras, etc.
+O sistema bancário deve gerenciar os seguintes elementos:
 
-Para a criação da primeira versão da API deve-se considerar o que já foi trabalhado em sala de aula, ou seja, o sistema deve permitir que os professores reservem horários para utilizar os laboratórios disponíveis, além de permitir a reserva de laboratórios para atividades extras, como reuniões, cursos, palestras, etc.:
+### Agências
 
-## O que deve ser entregue?
+Cada agência bancária possui:
 
-1. Criar a configuração inicial para a implementação de um projeto Django Django Rest que ofereça acesso a uma API em um banco de dados Postgres.
-2. Criar os modelos de dados;
-3. Criar os serializeres para os modelos;
-4. Criar as views para os modelos;
-5. Criar as rotas para os modelos;
-6. Criar acesso a documentação da API usando Swagger;
-7. Criar acesso a documentação da API usando Redoc;
-8. Fazer os teste de API com o Postman ou algum outro software de sua preferência que possa testar as funções da API
+- Código da agência (único)
+- Nome da agência
+- Endereço completo
+- Telefone de contato
+- Gerente responsável
+- Status (ativa ou inativa)
 
-Criar um arquivo README.md com as instruções de instalação e uso de acesso a API e suas respectivas funcionalidades.
+### Clientes
 
-**OBS: Neste primeiro momento não há necessidade de relacionar as tabelas. Os modelos devem ser independentes, sem interrelação.**
+Cada cliente do banco possui:
+
+- CPF (único)
+- Nome completo
+- Data de nascimento
+- Endereço
+- Telefone
+- Email
+- Data de cadastro
+- Status (ativo ou inativo)
+
+### Contas
+
+Cada conta bancária possui:
+
+- Número da conta (único)
+- Código da agência
+- CPF do titular
+- Tipo de conta (Corrente, Poupança, Salário)
+- Saldo atual
+- Data de abertura
+- Status (ativa, bloqueada ou encerrada)
+- Limite de saque diário
+
+### Depósitos
+
+Cada operação de depósito registra:
+
+- Número da conta
+- Valor do depósito
+- Data e hora da operação
+- Tipo de depósito (Dinheiro, Cheque, Transferência, PIX)
+- Descrição/observações
+- Caixa/operador responsável
+
+### Saques
+
+Cada operação de saque registra:
+
+- Número da conta
+- Valor do saque
+- Data e hora da operação
+- Local do saque (Caixa, Caixa Eletrônico)
+- Caixa/operador responsável (se aplicável)
+- Status da operação (Aprovado, Negado)
+
+### Transferências
+
+Cada transferência entre contas registra:
+
+- Número da conta de origem
+- Número da conta de destino
+- Valor da transferência
+- Data e hora da operação
+- Tipo de transferência (TED, DOC, PIX, Transferência Interna)
+- Descrição/finalidade
+- Status da operação (Processando, Concluída, Falhou)
+
+O sistema bancário segue diferentes fluxos de operação:
+
+1. **Fluxo de Cadastro**: Registro de agências, clientes e abertura de contas
+2. **Fluxo de Depósitos**: Registro de entrada de valores nas contas
+3. **Fluxo de Saques**: Registro de retirada de valores das contas
+4. **Fluxo de Transferências**: Movimentação de valores entre diferentes contas
+
+## Fluxos do Sistema
+
+O sistema bancário segue diferentes fluxos de operação:
+
+1. **Fluxo de Cadastro**: Registro de agências, clientes e abertura de contas
+2. **Fluxo de Depósitos**: Registro de entrada de valores nas contas
+3. **Fluxo de Saques**: Registro de retirada de valores das contas
+4. **Fluxo de Transferências**: Movimentação de valores entre diferentes contas
+
+## Requisitos do Trabalho Prático
+
+Para a criação da primeira versão da API, considere o que foi trabalhado em sala de aula. O sistema deve permitir o gerenciamento completo de todas as entidades do banco:
+
+### 1. Configuração Inicial
+
+- Criar a configuração inicial para a implementação de um projeto Django com Django Rest Framework
+- Configurar acesso a um banco de dados PostgreSQL
+- Configurar as variáveis de ambiente necessárias
+
+### 2. Modelos de Dados
+
+Criar os modelos Django para:
+
+- Agência
+- Cliente
+- Conta
+- Depósito
+- Saque
+- Transferência
+
+### 3. Serializers
+
+- Criar serializers para todos os modelos criados
+- Implementar validações básicas nos serializers
+
+### 4. Views
+
+- Criar views (ViewSets ou APIViews) para todos os modelos
+- Implementar operações CRUD (Create, Read, Update, Delete)
+
+### 5. Rotas
+
+- Configurar as rotas da API usando o Router do DRF
+- Seguir o padrão RESTful para nomenclatura das rotas
+
+### 6. Documentação
+
+- Configurar e disponibilizar documentação da API usando **Swagger**
+- Configurar e disponibilizar documentação da API usando **Redoc**
+
+### 7. Testes
+
+- Realizar testes de todas as funcionalidades da API usando Swagger ou um Frontend CLI
+
+### 8. README
+
+- O arquivo README.md do seu repositório deve conter:
+  - Descrição do projeto
+  - Descrição dos modelos
+  - Descrição dos endpoints
+-
+
+## Observações Importantes
+
+**OBS 1**: Neste primeiro momento **não há necessidade de relacionar as tabelas**. Os modelos devem ser independentes, sem interrelação via ForeignKey ou relacionamentos do Django ORM.
+
+**OBS 2**: Os campos que referenciam outras entidades (como "código da agência" em Conta, ou "número da conta" em Depósito) devem ser implementados como campos simples (CharField, IntegerField, etc.), não como chaves estrangeiras.
+
+**OBS 3**: As validações de negócio (como verificar se uma conta existe antes de fazer um depósito) **não são necessárias nesta primeira versão**. O foco é na estrutura básica da API.
+
+## Entrega
+
+O trabalho deve ser entregue através do GitHub Classroom no link fornecido acima.
+
+Certifique-se de que:
+
+1. O código está completo e funcional
+2. O README.md possui todas as instruções necessárias
+3. A API está devidamente documentada
