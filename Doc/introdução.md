@@ -44,7 +44,7 @@ manage.py
 Antes de criar a aplicação em Django Rest, é necessário instalar o Django e o Django Rest Framework. Para isso, basta rodar o seguinte comando:
 
 ```
-python3 -m venv env
+python -m venv env
 
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
