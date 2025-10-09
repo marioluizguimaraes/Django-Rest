@@ -55,6 +55,8 @@ pip install django
 pip install djangorestframework
 
 pip install psycopg2-binary
+
+pip install drf-yasg
 ```
 
 1. **Configuração Inicial**
