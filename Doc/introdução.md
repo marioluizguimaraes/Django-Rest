@@ -56,6 +56,8 @@ pip install djangorestframework
 
 pip install psycopg2-binary
 
+pip install django-filter
+
 pip install drf-yasg
 ```
 
