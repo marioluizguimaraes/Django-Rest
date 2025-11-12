@@ -14,30 +14,10 @@ class Usuario(AbstractUser):
         ('Gerente', 'Gerente'),
     ]
     
-    tipo = models.CharField(
-        max_length=20,
-        choices=TIPO_CHOICES,
-        default='Hospede',
-        help_text='Tipo de usuário no sistema'
-    )
-    cpf = models.CharField(
-        max_length=14, 
-        unique=True, 
-        null=True, 
-        blank=True,
-        help_text='CPF no formato XXX.XXX.XXX-XX'
-    )
-    telefone = models.CharField(
-        max_length=20, 
-        null=True, 
-        blank=True,
-        help_text='Telefone com DDD, ex: (XX) 9XXXX-XXXX'
-    )
-    data_nascimento = models.DateField(
-        null=True, 
-        blank=True,
-        help_text='Data de nascimento no formato AAAA-MM-DD'
-    )
+    tipo = models.CharField( max_length=20, choices=TIPO_CHOICES, default='Hospede', help_text='Tipo de usuário no sistema')
+    cpf = models.CharField( max_length=14,  unique=True,  null=True, blank=True, help_text='CPF no formato XXX.XXX.XXX-XX')
+    telefone = models.CharField( max_length=20,  null=True, blank=True, help_text='Telefone com DDD, ex: (XX) 9XXXX-XXXX')
+    data_nascimento = models.DateField( null=True, blank=True, help_text='Data de nascimento no formato AAAA-MM-DD')
 
     class Meta:
         verbose_name = 'Usuário'
@@ -51,16 +31,8 @@ class TipoQuarto(models.Model):
 
     nome = models.CharField(max_length=100, unique=True)
     descricao = models.TextField(blank=True)
-    preco_diaria = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2,
-        validators=[MinValueValidator(0.01)],
-        help_text='Preço da diária para este tipo de quarto'
-    )
-    capacidade = models.IntegerField(
-        validators=[MinValueValidator(1)],
-        help_text='Número máximo de hóspedes que o quarto suporta'
-    )
+    preco_diaria = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.01)], help_text='Preço da diária para este tipo de quarto')
+    capacidade = models.IntegerField(validators=[MinValueValidator(1)], help_text='Número máximo de hóspedes que o quarto suporta' )
 
     class Meta:
         verbose_name = 'Tipo de Quarto'
@@ -79,22 +51,10 @@ class Quarto(models.Model):
         ('Limpeza', 'Em Limpeza'),
     ]
     
-    numero = models.CharField(
-        max_length=10, 
-        unique=True,
-        help_text='Número ou identificador do quarto (ex: 101, 203A)'
-    )
+    numero = models.CharField(max_length=10, unique=True, help_text='Número ou identificador do quarto (ex: 101, 203A)' )
     andar = models.IntegerField(default=1)
-    tipo_quarto = models.ForeignKey(
-        TipoQuarto,
-        on_delete=models.PROTECT,
-        related_name='quartos'
-    )
-    status = models.CharField(
-        max_length=20, 
-        choices=STATUS_CHOICES, 
-        default='Disponivel'
-    )
+    tipo_quarto = models.ForeignKey(TipoQuarto, on_delete=models.PROTECT, related_name='quartos')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Disponivel')
 
     class Meta:
         verbose_name = 'Quarto'
@@ -114,43 +74,15 @@ class Reserva(models.Model):
         ('Cancelada', 'Cancelada'),
     ]
 
-    hospede = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.PROTECT,
-        related_name='reservas',
-        limit_choices_to={'tipo': 'Hospede'} 
-    )
-    quarto = models.ForeignKey(
-        Quarto,
-        on_delete=models.PROTECT,
-        related_name='reservas'
-    )
+    hospede = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,related_name='reservas', limit_choices_to={'tipo': 'Hospede'} )
+    quarto = models.ForeignKey(Quarto, on_delete=models.PROTECT,related_name='reservas')
     data_checkin = models.DateField(help_text='Data de entrada')
     data_checkout = models.DateField(help_text='Data de saída')
-    num_hospedes = models.IntegerField(
-        validators=[MinValueValidator(1)],
-        help_text='Número total de hóspedes na reserva'
-    )
-    valor_total = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
-        default=0.00,
-        help_text='Valor total calculado da estadia (diárias * preço)'
-    )
-    status = models.CharField(
-        max_length=20, 
-        choices=STATUS_CHOICES, 
-        default='Pendente'
-    )
+    num_hospedes = models.IntegerField(validators=[MinValueValidator(1)], help_text='Número total de hóspedes na reserva')
+    valor_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, help_text='Valor total calculado da estadia (diárias * preço)')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pendente')
     data_reserva = models.DateTimeField(auto_now_add=True)
-
-    valor_reembolso = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
-        null=True, 
-        blank=True,
-        help_text='Valor a ser reembolsado em caso de cancelamento'
-    )
+    valor_reembolso = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, help_text='Valor a ser reembolsado em caso de cancelamento' )
 
     class Meta:
         verbose_name = 'Reserva'
@@ -197,11 +129,7 @@ class ServicoAdicional(models.Model):
 
     nome = models.CharField(max_length=100, unique=True)
     descricao = models.TextField(blank=True)
-    preco = models.DecimalField(
-        max_digits=8, 
-        decimal_places=2,
-        validators=[MinValueValidator(0)]
-    )
+    preco = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
 
     class Meta:
         verbose_name = 'Serviço Adicional'
@@ -220,25 +148,10 @@ class SolicitacaoServico(models.Model):
         ('Cancelado', 'Cancelado'),
     ]
     
-    reserva = models.ForeignKey(
-        Reserva,
-        on_delete=models.CASCADE,
-        related_name='servicos_solicitados'
-    )
-    servico = models.ForeignKey(
-        ServicoAdicional,
-        on_delete=models.PROTECT,
-        related_name='solicitacoes'
-    )
-    quantidade = models.IntegerField(
-        default=1, 
-        validators=[MinValueValidator(1)]
-    )
-    status = models.CharField(
-        max_length=20, 
-        choices=STATUS_CHOICES, 
-        default='Solicitado'
-    )
+    reserva = models.ForeignKey(Reserva, on_delete=models.CASCADE, related_name='servicos_solicitados')
+    servico = models.ForeignKey(ServicoAdicional, on_delete=models.PROTECT,related_name='solicitacoes')
+    quantidade = models.IntegerField(default=1, validators=[MinValueValidator(1)])
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Solicitado')
     data_solicitacao = models.DateTimeField(auto_now_add=True)
     valor_total = models.DecimalField(max_digits=10, decimal_places=2, blank=True, help_text='Valor total (serviço * quantidade)')
 
@@ -258,21 +171,9 @@ class SolicitacaoServico(models.Model):
 
 class Avaliacao(models.Model):
 
-    reserva = models.OneToOneField(
-        Reserva,
-        on_delete=models.CASCADE,
-        related_name='avaliacao'
-    )
-    hospede = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL, 
-        null=True,
-        related_name='avaliacoes_feitas'
-    )
-    nota = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)],
-        help_text='Nota de 1 a 5 estrelas'
-    )
+    reserva = models.OneToOneField( Reserva, on_delete=models.CASCADE, related_name='avaliacao')
+    hospede = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL, null=True, related_name='avaliacoes_feitas')
+    nota = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], help_text='Nota de 1 a 5 estrelas' )
     comentario = models.TextField(blank=True)
     data_avaliacao = models.DateTimeField(auto_now_add=True)
 

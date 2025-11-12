@@ -34,9 +34,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
     'rest_framework.authtoken',  
     'django_filters',           
+    
     'backend',
     'drf_yasg',
 ]
@@ -95,7 +97,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'hotel',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': '1334425',
         'HOST': 'localhost',
         'PORT': '5432',
     }
